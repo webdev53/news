@@ -11,7 +11,7 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
 
-   @include('admin.layout.styles')
+  @include('admin.layout.styles')
   @include('admin.layout.scripts')
 
 </head>
@@ -28,10 +28,22 @@
                   <h4 class="text-center">Reset Password</h4>
                 </div>
                 <div class="card-body card-body-auth">
-                  <form method="POST" action="">
+
+                  @if(session()->get('success'))
+                  <div class="text-success">{{ session()->get('success') }}</div>
+                  @endif
+
+                  <form method="POST" action="{{ route('admin_forget_password_submit') }}">
+                    @csrf
                     <div class="form-group">
-                      <input type="email" class="form-control" name="email" placeholder="Email Address" value=""
-                        autofocus>
+                      <input type="text" class="form-control @error('email') is-invalid @enderror" name="email"
+                        placeholder="Email Address" value="" autofocus>
+                      @error('email')
+                      <div class="text-danger">{{ $message }}</div>
+                      @enderror
+                      @if(session()->get('error'))
+                      <div class="text-danger">{{ session()->get('error') }}</div>
+                      @endif
                     </div>
                     <div class="form-group">
                       <button type="submit" class="btn btn-primary btn-lg btn-block">
